@@ -3,7 +3,7 @@ import { UnitTest } from '@ephox/bedrock-client';
 import { LegacyUnit } from '@ephox/mcagar';
 import URI from 'tinymce/core/api/util/URI';
 
-UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failure) {
+UnitTest.asynctest('browser.tinymce.core.util.UriTest', (success, failure) => {
   const suite = LegacyUnit.createSuite();
 
   const ok = function (value, label?) {
@@ -13,7 +13,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
 
   /* eslint max-len: 0 */
 
-  suite.test('protocol relative url', function () {
+  suite.test('protocol relative url', () => {
     const uri = new URI('//www.site.com/dir1/file?query#hash');
 
     LegacyUnit.equal(uri.protocol, '');
@@ -29,19 +29,19 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     LegacyUnit.equal(uri.toAbsolute('//www.site2.com/dir1/file2'), '//www.site2.com/dir1/file2');
   });
 
-  suite.test('parseFullURLs', function () {
+  suite.test('parseFullURLs', () => {
     LegacyUnit.equal(new URI('http://abc:123@www.site.com:8080/path/dir/file.ext?key1=val1&key2=val2#hash').getURI(), 'http://abc:123@www.site.com:8080/path/dir/file.ext?key1=val1&key2=val2#hash');
     ok(new URI('http://a2bc:123@www.site.com:8080/path/dir/file.ext?key1=val1&key2=val2#hash').getURI() !== 'http://abc:123@www.site.com:8080/path/dir/file.ext?key1=val1&key2=val2#hash');
     LegacyUnit.equal(new URI('chrome-extension://abcdefghijklmnopqrstuvwzyz1234567890:8080/path/dir/file.ext?key1=val1&key2=val2#hash').getURI(), 'chrome-extension://abcdefghijklmnopqrstuvwzyz1234567890:8080/path/dir/file.ext?key1=val1&key2=val2#hash');
   });
 
-  suite.test('parseRelativeURLs', function () {
+  suite.test('parseRelativeURLs', () => {
     LegacyUnit.equal(new URI('./test.html').getURI(), 'http://mce_host/test.html');
     LegacyUnit.equal(new URI('test.html').getURI(), 'http://mce_host/test.html');
     LegacyUnit.equal(new URI('/assets/test.html').getURI(), 'http://mce_host/assets/test.html');
   });
 
-  suite.test('relativeURLs', function () {
+  suite.test('relativeURLs', () => {
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/file.html').toRelative('http://www.site.com/dir1/dir3/file.html'), '../dir3/file.html');
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/file.html').toRelative('http://www.site.com/dir3/dir4/file.html'), '../../dir3/dir4/file.html');
     LegacyUnit.equal(new URI('http://www.site.com/dir1/').toRelative('http://www.site.com/dir1/dir3/file.htm'), 'dir3/file.htm');
@@ -75,7 +75,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/').toRelative('/file.htm#http://site.com/'), '../../file.htm#http://site.com/');
   });
 
-  suite.test('absoluteURLs', function () {
+  suite.test('absoluteURLs', () => {
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/').toAbsolute(''), 'http://www.site.com/dir1/dir2/');
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/').toAbsolute('../dir3'), 'http://www.site.com/dir1/dir3');
     LegacyUnit.equal(new URI('http://www.site.com/dir1/dir2/').toAbsolute('../dir3', true), '/dir1/dir3');
@@ -97,7 +97,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     LegacyUnit.equal(new URI('chrome-extension://abcdefghijklmnopqrstuvwzyz1234567890/dir1/dir2/').toAbsolute('chrome-extension://abcdefghijklmnopqrstuvwzyz1234567890/dir1/dir2/', true), '/dir1/dir2/');
   });
 
-  suite.test('strangeURLs', function () {
+  suite.test('strangeURLs', () => {
     LegacyUnit.equal(new URI('//www.site.com').getURI(), '//www.site.com');
     LegacyUnit.equal(new URI('mailto:test@test.com').getURI(), 'mailto:test@test.com');
     LegacyUnit.equal(new URI('news:somegroup').getURI(), 'news:somegroup');
@@ -106,7 +106,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     LegacyUnit.equal(new URI('//www.site.com/a@b').getURI(), '//www.site.com/a@b');
   });
 
-  suite.test('isSameOrigin', function () {
+  suite.test('isSameOrigin', () => {
     ok(new URI('http://www.site.com').isSameOrigin(new URI('http://www.site.com')));
     ok(new URI('//www.site.com').isSameOrigin(new URI('//www.site.com')));
     ok(new URI('http://www.site.com:80').isSameOrigin(new URI('http://www.site.com')));
@@ -122,7 +122,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     ok(new URI('ftp://www.site.com:1021').isSameOrigin(new URI('ftp://www.site.com')) === false);
   });
 
-  suite.test('getDocumentBaseUrl', function () {
+  suite.test('getDocumentBaseUrl', () => {
     const getDocumentBaseUrl = URI.getDocumentBaseUrl;
 
     LegacyUnit.equal(getDocumentBaseUrl({ protocol: 'file:', host: '', pathname: '/dir/path1/path2' }), 'file:///dir/path1/');
@@ -136,7 +136,7 @@ UnitTest.asynctest('browser.tinymce.core.util.UriTest', function (success, failu
     LegacyUnit.equal(getDocumentBaseUrl({ protocol: 'applewebdata:', href: 'applewebdata://something//dir/path1' }), 'applewebdata://something//dir/');
   });
 
-  Pipeline.async({}, suite.toSteps({}), function () {
+  Pipeline.async({}, suite.toSteps({}), () => {
     success();
   }, failure);
 });
