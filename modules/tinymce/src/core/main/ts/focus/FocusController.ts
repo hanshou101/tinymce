@@ -18,12 +18,12 @@ import * as SelectionRestore from '../selection/SelectionRestore';
 let documentFocusInHandler;
 const DOM = DOMUtils.DOM;
 
-const isEditorUIElement = function (elm: Element) {
+const isEditorUIElement = (elm: Element) => {
   // Since this can be overridden by third party we need to use the API reference here
   return FocusManager.isEditorUIElement(elm);
 };
 
-const isEditorContentAreaElement = function (elm: Element) {
+const isEditorContentAreaElement = (elm: Element) => {
   const classList = elm.classList;
   if (classList !== undefined) {
     // tox-edit-area__iframe === iframe container element
@@ -34,7 +34,7 @@ const isEditorContentAreaElement = function (elm: Element) {
   }
 };
 
-const isUIElement = function (editor: Editor, elm: Node) {
+const isUIElement = (editor: Editor, elm: Node) => {
   const customSelector = Settings.getCustomUiSelector(editor);
   const parent = DOM.getParent(elm, (elm) => {
     return (
@@ -45,7 +45,7 @@ const isUIElement = function (editor: Editor, elm: Node) {
   return parent !== null;
 };
 
-const getActiveElement = function (editor: Editor): Element {
+const getActiveElement = (editor: Editor): Element => {
   try {
     const root = SugarShadowDom.getRootNode(SugarElement.fromDom(editor.getElement()));
     return Focus.active(root).fold(
@@ -59,12 +59,12 @@ const getActiveElement = function (editor: Editor): Element {
   }
 };
 
-const registerEvents = function (editorManager: EditorManager, e: { editor: Editor }) {
+const registerEvents = (editorManager: EditorManager, e: { editor: Editor }) => {
   const editor = e.editor;
 
   SelectionRestore.register(editor);
 
-  editor.on('focusin', function () {
+  editor.on('focusin', () => {
     const self: Editor = this;
     const focusedEditor = editorManager.focusedEditor;
 
@@ -80,7 +80,7 @@ const registerEvents = function (editorManager: EditorManager, e: { editor: Edit
     }
   });
 
-  editor.on('focusout', function () {
+  editor.on('focusout', () => {
     const self: Editor = this;
     Delay.setEditorTimeout(self, () => {
       const focusedEditor = editorManager.focusedEditor;
@@ -96,7 +96,7 @@ const registerEvents = function (editorManager: EditorManager, e: { editor: Edit
   // Check if focus is moved to an element outside the active editor by checking if the target node
   // isn't within the body of the activeEditor nor a UI element such as a dialog child control
   if (!documentFocusInHandler) {
-    documentFocusInHandler = function (e: FocusEvent) {
+    documentFocusInHandler = (e: FocusEvent) => {
       const activeEditor = editorManager.activeEditor;
 
       if (activeEditor) {
@@ -116,7 +116,7 @@ const registerEvents = function (editorManager: EditorManager, e: { editor: Edit
   }
 };
 
-const unregisterDocumentEvents = function (editorManager: EditorManager, e: { editor: Editor }) {
+const unregisterDocumentEvents = (editorManager: EditorManager, e: { editor: Editor }) => {
   if (editorManager.focusedEditor === e.editor) {
     editorManager.focusedEditor = null;
   }
@@ -127,7 +127,7 @@ const unregisterDocumentEvents = function (editorManager: EditorManager, e: { ed
   }
 };
 
-const setup = function (editorManager: EditorManager) {
+const setup = (editorManager: EditorManager) => {
   editorManager.on('AddEditor', Fun.curry(registerEvents, editorManager));
   editorManager.on('RemoveEditor', Fun.curry(unregisterDocumentEvents, editorManager));
 };

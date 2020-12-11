@@ -28,7 +28,7 @@ interface BookmarkManager {
  * @method BookmarkManager
  * @param {tinymce.dom.Selection} selection Selection instance to handle bookmarks for.
  */
-function BookmarkManager(selection: EditorSelection): BookmarkManager {
+const BookmarkManager = (selection: EditorSelection): BookmarkManager => {
   return {
     /**
      * Returns a bookmark location for the current selection. This bookmark object
@@ -66,18 +66,16 @@ function BookmarkManager(selection: EditorSelection): BookmarkManager {
      */
     moveToBookmark: Fun.curry(Bookmarks.moveToBookmark, selection) as (bookmark: Bookmark) => boolean
   };
-}
+};
 
-namespace BookmarkManager {
-  /**
-   * Returns true/false if the specified node is a bookmark node or not.
-   *
-   * @static
-   * @method isBookmarkNode
-   * @param {DOMNode} node DOM Node to check if it's a bookmark node or not.
-   * @return {Boolean} true/false if the node is a bookmark node or not.
-   */
-  export const isBookmarkNode = Bookmarks.isBookmarkNode as (node: Node) => boolean;
-}
+/**
+ * Returns true/false if the specified node is a bookmark node or not.
+ *
+ * @static
+ * @method isBookmarkNode
+ * @param {DOMNode} node DOM Node to check if it's a bookmark node or not.
+ * @return {Boolean} true/false if the node is a bookmark node or not.
+ */
+BookmarkManager.isBookmarkNode = Bookmarks.isBookmarkNode as (node: Node) => boolean;
 
 export default BookmarkManager;

@@ -81,13 +81,13 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
     sw: [ 0, 1, -1, 1 ]
   };
 
-  const isImage = function (elm) {
+  const isImage = (elm) => {
     return elm && (elm.nodeName === 'IMG' || editor.dom.is(elm, 'figure.image'));
   };
 
   const isMedia = (elm: Element) => NodeType.isMedia(elm) || dom.hasClass(elm, 'mce-preview-object');
 
-  const isEventOnImageOutsideRange = function (evt, range) {
+  const isEventOnImageOutsideRange = (evt, range) => {
     if (evt.type === 'longpress' || evt.type.indexOf('touch') === 0) {
       const touch = evt.touches[0];
       return isImage(evt.target) && !RangePoint.isXYWithinRange(touch.clientX, touch.clientY, range);
@@ -96,7 +96,7 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
     }
   };
 
-  const contextMenuSelectImage = function (evt) {
+  const contextMenuSelectImage = (evt) => {
     const target = evt.target;
 
     if (isEventOnImageOutsideRange(evt, editor.selection.getRng()) && !evt.isDefaultPrevented()) {
@@ -414,10 +414,10 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
     });
   };
 
-  const updateResizeRect = function (e) {
+  const updateResizeRect = (e) => {
     let startElm, controlElm;
 
-    const isChildOrEqual = function (node, parent) {
+    const isChildOrEqual = (node, parent) => {
       if (node) {
         do {
           if (node === parent) {
@@ -453,11 +453,11 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
     hideResizeRect();
   };
 
-  const isWithinContentEditableFalse = function (elm) {
+  const isWithinContentEditableFalse = (elm) => {
     return isContentEditableFalse(CefUtils.getContentEditableRoot(editor.getBody(), elm));
   };
 
-  const unbindResizeHandleEvents = function () {
+  const unbindResizeHandleEvents = () => {
     Obj.each(resizeHandles, (handle) => {
       if (handle.elm) {
         dom.unbind(handle.elm);
@@ -466,7 +466,7 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
     });
   };
 
-  const disableGeckoResize = function () {
+  const disableGeckoResize = () => {
     try {
       // Disable object resizing on Gecko
       editor.getDoc().execCommand('enableObjectResizing', false, 'false');
@@ -548,7 +548,7 @@ const ControlSelection = (selection: EditorSelection, editor: Editor): ControlSe
 
   editor.on('remove', unbindResizeHandleEvents);
 
-  const destroy = function () {
+  const destroy = () => {
     selectedElm = selectedElmGhost = resizeBackdrop = null;
   };
 
